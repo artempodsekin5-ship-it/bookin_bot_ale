@@ -1,0 +1,22 @@
+# Переменные окружения (секреты и токены)
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Логи
+*.log
