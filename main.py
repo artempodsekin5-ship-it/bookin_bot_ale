@@ -24,10 +24,10 @@ from handlers import setup_routers
 async def set_bot_commands(bot: Bot):
     """Регистрация команд в меню Telegram"""
     commands = [
-        BotCommand(command="start", description="🚀 Главное меню"),
-        BotCommand(command="apply", description="📝 Оформить заявку"),
-        BotCommand(command="cancel", description="❌ Отменить текущее действие"),
-        BotCommand(command="help", description="ℹ️ Помощь и информация"),
+        BotCommand(command="start", description="⚡ Главное меню"),
+        BotCommand(command="apply", description="� Записаться на съемку"),
+        BotCommand(command="cancel", description="🚫 Отменить действие"),
+        BotCommand(command="help", description="💬 Инфо"),
     ]
     try:
         await bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
