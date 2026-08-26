@@ -25,9 +25,9 @@ async def ask_name(target: Message | CallbackQuery, state: FSMContext, is_edit: 
     """Запрос ввода имени"""
     await state.set_state(ApplicationForm.waiting_for_name)
     prompt = (
-        "✏️ Напиши имя или ник ещё раз:"
+        "Пожалуйста, напиши имя или ник ещё раз:"
         if is_edit
-        else "📋 <b>1/4: Как тебя зовут?</b> ✍️\n\nНапиши имя или ник:"
+        else "<b>1/4: Как тебя зовут?</b>\n\nНапиши имя или ник:"
     )
     if isinstance(target, CallbackQuery):
         await target.message.answer(prompt, parse_mode="HTML", reply_markup=get_cancel_keyboard())
@@ -40,9 +40,9 @@ async def ask_phone(target: Message | CallbackQuery, state: FSMContext, is_edit:
     """Запрос ввода номера телефона"""
     await state.set_state(ApplicationForm.waiting_for_phone)
     prompt = (
-        "✏️ Отправь контакт или напиши номер ещё раз:"
+        "Отправь контакт или напиши номер ещё раз:"
         if is_edit
-        else "📱 <b>2/4: Номер для связи</b>\n\n"
+        else "<b>2/4: Номер для связи</b>\n\n"
              "Поделись контактом по кнопке ниже или напиши номер вручную (например: <code>+7 999 123-45-67</code>):"
     )
     if isinstance(target, CallbackQuery):
@@ -56,9 +56,9 @@ async def ask_city(target: Message | CallbackQuery, state: FSMContext, is_edit: 
     """Запрос ввода города"""
     await state.set_state(ApplicationForm.waiting_for_city)
     prompt = (
-        "✏️ Напиши город съёмки ещё раз:"
+        "Напиши город съёмки ещё раз:"
         if is_edit
-        else "🏙️ <b>3/4: В каком ты городе?</b>\n\nГде планируем снимать:"
+        else "<b>3/4: В каком ты городе?</b>\n\nГде планируем снимать:"
     )
     if isinstance(target, CallbackQuery):
         await target.message.answer(prompt, parse_mode="HTML", reply_markup=get_cancel_keyboard())
@@ -71,9 +71,9 @@ async def ask_format(target: Message | CallbackQuery, state: FSMContext, is_edit
     """Запрос формата съемки"""
     await state.set_state(ApplicationForm.waiting_for_format)
     prompt = (
-        "✏️ Выбери или напиши формат съёмки ещё раз:"
+        "Выбери или напиши формат съёмки ещё раз:"
         if is_edit
-        else "📸 <b>4/4: Формат съёмки</b>\n\n"
+        else "<b>4/4: Формат съёмки</b>\n\n"
              "Выбери подходящий вариант кнопкой или напиши свой текстом:"
     )
     if isinstance(target, CallbackQuery):
@@ -106,14 +106,14 @@ async def process_name(message: Message, state: FSMContext):
     """Получение имени и запрос подтверждения"""
     name = message.text.strip()
     if len(name) < 2:
-        await message.answer("⚠️ Имя слишком короткое. Пожалуйста, введите корректное имя:")
+        await message.answer("Имя слишком короткое. Пожалуйста, введи корректное имя:")
         return
 
     await state.update_data(temp_name=name)
     await state.set_state(ApplicationForm.confirm_name)
 
     await message.answer(
-        f"Записали имя:\n👉 <b>{html.escape(name)}</b>\n\nОставляем?",
+        f"Записали имя:\n<b>{html.escape(name)}</b>\n\nОставляем?",
         reply_markup=get_step_confirm_keyboard("name"),
         parse_mode="HTML"
     )
@@ -126,7 +126,7 @@ async def confirm_name_callback(callback: CallbackQuery, state: FSMContext):
     name = data.get("temp_name")
     await state.update_data(name=name)
     await callback.message.edit_text(
-        f"✅ Имя: <b>{html.escape(str(name))}</b>",
+        f"Имя: <b>{html.escape(str(name))}</b>",
         parse_mode="HTML"
     )
     await ask_phone(callback, state)
@@ -155,7 +155,7 @@ async def process_phone(message: Message, state: FSMContext):
         digits_only = [c for c in phone if c.isdigit()]
         if len(digits_only) < 7:
             await message.answer(
-                "⚠️ Номер телефона слишком короткий. Пожалуйста, укажите корректный номер:",
+                "Номер телефона слишком короткий. Пожалуйста, укажи корректный номер:",
                 reply_markup=get_phone_keyboard()
             )
             return
@@ -164,7 +164,7 @@ async def process_phone(message: Message, state: FSMContext):
     await state.set_state(ApplicationForm.confirm_phone)
 
     await message.answer(
-        f"Твой номер:\n👉 <b>{html.escape(phone)}</b>\n\nОставляем?",
+        f"Твой номер:\n<b>{html.escape(phone)}</b>\n\nОставляем?",
         reply_markup=get_step_confirm_keyboard("phone"),
         parse_mode="HTML"
     )
@@ -177,7 +177,7 @@ async def confirm_phone_callback(callback: CallbackQuery, state: FSMContext):
     phone = data.get("temp_phone")
     await state.update_data(phone=phone)
     await callback.message.edit_text(
-        f"✅ Телефон: <b>{html.escape(str(phone))}</b>",
+        f"Телефон: <b>{html.escape(str(phone))}</b>",
         parse_mode="HTML"
     )
     await ask_city(callback, state)
@@ -197,14 +197,14 @@ async def process_city(message: Message, state: FSMContext):
     """Получение города и запрос подтверждения"""
     city = message.text.strip()
     if len(city) < 2:
-        await message.answer("⚠️ Название города слишком короткое. Введите город ещё раз:")
+        await message.answer("Название города слишком короткое. Введи город ещё раз:")
         return
 
     await state.update_data(temp_city=city)
     await state.set_state(ApplicationForm.confirm_city)
 
     await message.answer(
-        f"Город съёмки:\n👉 <b>{html.escape(city)}</b>\n\nОставляем?",
+        f"Город съёмки:\n<b>{html.escape(city)}</b>\n\nОставляем?",
         reply_markup=get_step_confirm_keyboard("city"),
         parse_mode="HTML"
     )
@@ -217,7 +217,7 @@ async def confirm_city_callback(callback: CallbackQuery, state: FSMContext):
     city = data.get("temp_city")
     await state.update_data(city=city)
     await callback.message.edit_text(
-        f"✅ Город: <b>{html.escape(str(city))}</b>",
+        f"Город: <b>{html.escape(str(city))}</b>",
         parse_mode="HTML"
     )
     await ask_format(callback, state)
@@ -240,7 +240,7 @@ async def process_format_button(callback: CallbackQuery, state: FSMContext):
     await state.set_state(ApplicationForm.confirm_format)
 
     await callback.message.edit_text(
-        f"Формат съёмки:\n👉 <b>{html.escape(format_selected)}</b>\n\nОставляем?",
+        f"Формат съёмки:\n<b>{html.escape(format_selected)}</b>\n\nОставляем?",
         reply_markup=get_step_confirm_keyboard("format"),
         parse_mode="HTML"
     )
@@ -254,7 +254,7 @@ async def process_format_text(message: Message, state: FSMContext):
     await state.set_state(ApplicationForm.confirm_format)
 
     await message.answer(
-        f"Формат съёмки:\n👉 <b>{html.escape(format_entered)}</b>\n\nОставляем?",
+        f"Формат съёмки:\n<b>{html.escape(format_entered)}</b>\n\nОставляем?",
         reply_markup=get_step_confirm_keyboard("format"),
         parse_mode="HTML"
     )
@@ -267,7 +267,7 @@ async def confirm_format_callback(callback: CallbackQuery, state: FSMContext):
     chosen_format = data.get("temp_format")
     await state.update_data(format=chosen_format)
     await callback.message.edit_text(
-        f"✅ Формат: <b>{html.escape(str(chosen_format))}</b>",
+        f"Формат: <b>{html.escape(str(chosen_format))}</b>",
         parse_mode="HTML"
     )
     await show_summary(callback, state)
@@ -293,12 +293,12 @@ async def show_summary(target: Message | CallbackQuery, state: FSMContext):
     fmt = data.get("format", "—")
 
     summary_text = (
-        "📋 <b>Чекни заявку перед отправкой:</b>\n\n"
-        f"👤 <b>Имя:</b> {html.escape(str(name))}\n"
-        f"📱 <b>Связь:</b> {html.escape(str(phone))}\n"
-        f"🏙️ <b>Город:</b> {html.escape(str(city))}\n"
-        f"📸 <b>Формат:</b> {html.escape(str(fmt))}\n\n"
-        "<i>Если всё сходится — жми кнопку ниже 🔥</i>"
+        "<b>Чекни заявку перед отправкой:</b>\n\n"
+        f"Имя: {html.escape(str(name))}\n"
+        f"Связь: {html.escape(str(phone))}\n"
+        f"Город: {html.escape(str(city))}\n"
+        f"Формат: {html.escape(str(fmt))}\n\n"
+        "<i>Если всё сходится — жми кнопку ниже</i>"
     )
 
     if isinstance(target, CallbackQuery):
@@ -332,12 +332,12 @@ async def final_send_callback(callback: CallbackQuery, state: FSMContext, bot: B
     user_mention = f"<a href=\"tg://user?id={user.id}\">{html.escape(user.full_name)}</a>"
 
     admin_message = (
-        "⚡ <b>НОВАЯ ЗАЯВКА НА СЪЁМКУ!</b>\n"
+        "<b>НОВАЯ ЗАЯВКА НА СЪЁМКУ</b>\n"
         "━━━━━━━━━━━━━━━━━━\n"
-        f"👤 <b>Имя клиента:</b> {html.escape(str(name))}\n"
-        f"📱 <b>Телефон:</b> <code>{html.escape(str(phone))}</code>\n"
-        f"🏙️ <b>Город:</b> {html.escape(str(city))}\n"
-        f"📸 <b>Формат:</b> {html.escape(str(fmt))}\n"
+        f"Имя клиента: {html.escape(str(name))}\n"
+        f"Телефон: <code>{html.escape(str(phone))}</code>\n"
+        f"Город: {html.escape(str(city))}\n"
+        f"Формат: {html.escape(str(fmt))}\n"
         "━━━━━━━━━━━━━━━━━━\n"
         "<b>Информация о пользователе:</b>\n"
         f"• Профиль: {user_mention}\n"
@@ -362,8 +362,8 @@ async def final_send_callback(callback: CallbackQuery, state: FSMContext, bot: B
                 logger.error(f"Не удалось отправить заявку админу {admin_id}: {e}")
 
     await callback.message.edit_text(
-        "🖤 <b>Заявка улетела!</b>\n\n"
-        "Скоро свяжемся с тобой для обсуждения деталей и мудборда 📸✨\n\n"
+        "<b>Заявка отправлена!</b>\n\n"
+        "Скоро свяжемся с тобой для обсуждения деталей и мудборда.\n\n"
         "Если захочешь оформить ещё раз — пиши /start или /apply",
         parse_mode="HTML"
     )
@@ -385,7 +385,7 @@ async def final_cancel_callback(callback: CallbackQuery, state: FSMContext):
     """Отмена заявки"""
     await state.clear()
     await callback.message.edit_text(
-        "🚫 Оформление заявки отменено.\n\nЕсли захочешь снова — тыкай /start или /apply",
+        "Оформление заявки отменено.\n\nЕсли захочешь снова — пиши /start или /apply",
         parse_mode="HTML"
     )
     await callback.answer("Заявка отменена")

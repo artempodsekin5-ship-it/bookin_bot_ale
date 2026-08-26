@@ -16,13 +16,13 @@ async def cmd_start(message: Message, state: FSMContext):
     user_name = html.escape(message.from_user.first_name) if message.from_user else "гость"
 
     text = (
-        f"йоу, <b>{user_name}</b> 🖤\n\n"
+        f"йоу, <b>{user_name}</b>\n\n"
         "сделаем стильный контент! чтобы забронить съемку, ответь всего на 4 быстрых вопроса:\n\n"
         "• как тебя зовут\n"
         "• твой контакт для связи\n"
         "• в каком ты городе\n"
         "• формат съемки\n\n"
-        "жми кнопку ниже и погнали 👇"
+        "жми кнопку ниже и погнали:"
     )
 
     await message.answer(
@@ -36,7 +36,7 @@ async def cmd_start(message: Message, state: FSMContext):
 async def cmd_help(message: Message):
     """Обработчик команды /help"""
     text = (
-        "💬 <b>что по командам:</b>\n\n"
+        "<b>Что по командам:</b>\n\n"
         "• /start — открыть главное меню\n"
         "• /apply — записаться на съемку\n"
         "• /cancel — сбросить заполнение\n"
@@ -47,9 +47,7 @@ async def cmd_help(message: Message):
 
 
 @router.message(Command("cancel"))
-@router.message(F.text.casefold() == "🚫 отмена")
-@router.message(F.text.casefold() == "❌ отмена")
-@router.message(F.text.casefold() == "отмена")
+@router.message(F.text.casefold().contains("отмен"))
 async def cmd_cancel(message: Message, state: FSMContext):
     """Отмена текущего процесса заполнения заявки"""
     current_state = await state.get_state()
@@ -62,6 +60,6 @@ async def cmd_cancel(message: Message, state: FSMContext):
 
     await state.clear()
     await message.answer(
-        "🚫 Запись отменена.\n\nЕсли захочешь снова — тыкай /start или /apply",
+        "Запись отменена.\n\nЕсли захочешь снова — пиши /start или /apply",
         reply_markup=remove_keyboard()
     )

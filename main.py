@@ -24,10 +24,10 @@ from handlers import setup_routers
 async def set_bot_commands(bot: Bot):
     """Регистрация команд в меню Telegram"""
     commands = [
-        BotCommand(command="start", description="⚡ Главное меню"),
-        BotCommand(command="apply", description="� Записаться на съемку"),
-        BotCommand(command="cancel", description="🚫 Отменить действие"),
-        BotCommand(command="help", description="💬 Инфо"),
+        BotCommand(command="start", description="Главное меню"),
+        BotCommand(command="apply", description="Записаться на съемку"),
+        BotCommand(command="cancel", description="Отменить действие"),
+        BotCommand(command="help", description="Инфо"),
     ]
     try:
         await bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
@@ -80,12 +80,12 @@ async def main():
         await set_bot_commands(bot)
 
         print("=" * 55)
-        print(f"🚀 Бот @{bot_info.username} успешно запущен и работает!")
-        print(f"👑 Администраторы: {config.admin_ids if config.admin_ids else 'Не указаны'}")
+        print(f"Бот @{bot_info.username} успешно запущен и работает.")
+        print(f"Администраторы: {config.admin_ids if config.admin_ids else 'Не указаны'}")
         if config.proxy_url:
-            print(f"🌐 Используется прокси: {config.proxy_url}")
-        print("💡 Перейдите в Telegram и отправьте боту /start")
-        print("🛑 Для остановки бота нажмите Ctrl + C")
+            print(f"Используется прокси: {config.proxy_url}")
+        print("Перейдите в Telegram и отправьте боту /start")
+        print("Для остановки бота нажмите Ctrl + C")
         print("=" * 55)
 
         # Пропускаем накопившиеся апдейты и запускаем polling
@@ -95,8 +95,8 @@ async def main():
     except TelegramNetworkError as e:
         print("\n" + "!" * 55)
         logger.error(f"Сетевая ошибка при подключении к Telegram: {e}")
-        print("⚠️ Не удалось установить соединение с серверами Telegram (api.telegram.org).")
-        print("💡 Возможные решения:")
+        print("Не удалось установить соединение с серверами Telegram (api.telegram.org).")
+        print("Возможные решения:")
         print("  1. Включите VPN (если ваш провайдер или мобильный интернет блокирует Telegram API).")
         print("  2. Или укажите PROXY_URL в файле .env (например: PROXY_URL=socks5://127.0.0.1:10808).")
         print("  3. Проверьте подключение к сети Интернет.")
